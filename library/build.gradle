@@ -1,0 +1,53 @@
+apply plugin: 'com.android.library'
+
+// to publish with library dependencies without error
+apply plugin: 'digital.wup.android-maven-publish'
+
+// used to create the library at jitpack.io
+apply plugin: 'com.github.dcendents.android-maven'
+
+def library_group = 'com.github.ademarazn'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName library_version
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// 'com.github.dcendents.android-maven' configs
+group = library_group
+version = library_version
+
+// library dependencies
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:support-annotations:28.0.0'
+}
+
+// 'digital.wup.android-maven-publish' configs
+publishing {
+    publications {
+        mavenAar(MavenPublication) {
+            from components.android
+            groupId = library_group
+            artifactId = 'wcontacts-lib'
+            version = library_version
+        }
+    }
+}

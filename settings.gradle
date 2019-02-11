@@ -1,0 +1,4 @@
+include ':sample', ':library'
+
+// 'digital.wup.android-maven-publish' artifactId
+rootProject.name = 'wcontacts-lib'

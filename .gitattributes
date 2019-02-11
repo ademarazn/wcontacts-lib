@@ -1,0 +1,14 @@
+# Auto detect text files 
+* text=auto eol=lf
+
+# The above will handle all files NOT found below
+# Perform LF normalization for these text files
+*.md            text
+*.java          text
+*.properties    text
+*.xml           text
+
+# These files are binary and should be left untouched
+# (binary is a macro for -text -diff)
+*.jar           binary
+*.png           binary
