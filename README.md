@@ -8,7 +8,7 @@ A library to retrieve WhatsApp contacts stored on the device.
 To use the WContacts Lib in your android project, just follow the steps below:
 
 **Step 1.** Add the JitPack repository to your root build.gradle at the end of the repositories:
-```Groove
+```Groovy
 allprojects {
     repositories {
        ...
@@ -18,7 +18,7 @@ allprojects {
 ```
 
 **Step 2.** Add the dependency
-```Groove
+```Groovy
 dependencies {
     implementation 'com.github.ademarazn:wcontacts-lib:1.0'
 }
