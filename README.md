@@ -25,7 +25,7 @@ dependencies {
 ```
 
 ## Usage
-To retrieve the wContacts (WhatsApp contact objects), use ```WContactsLibrary.getWContacts(Context)``` method.
+To retrieve the wContacts (WhatsApp contact objects), use ```WContactsLibrary.getWContacts(Context context, WContactsListener listener)``` method.
 
 **Exemple:**
 ```Java
