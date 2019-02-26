@@ -83,7 +83,7 @@ public class MainActivity extends ListActivity implements WContactsListener {
         }, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
-                data.get(position).sendIntent(getApplicationContext());
+                data.get(position).sendIntent(MainActivity.this);
             }
         });
         mDialogBuilder.show();

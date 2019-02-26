@@ -1,6 +1,6 @@
 package com.ademarazn.wcontactslibrary.model;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.ademarazn.wcontactslibrary.util.WDataUtils;
@@ -36,7 +36,7 @@ public abstract class WData {
         return mimeType;
     }
 
-    public abstract void sendIntent(@NonNull Context context);
+    public abstract void sendIntent(@NonNull Activity activity);
 
     @Override
     public String toString() {
@@ -72,8 +72,8 @@ public abstract class WData {
         public WData build() {
             return new WData(this) {
                 @Override
-                public void sendIntent(@NonNull Context context) {
-                    WDataUtils.sendWhatsAppIntent(context, this);
+                public void sendIntent(@NonNull Activity activity) {
+                    WDataUtils.sendWhatsAppIntent(activity, this);
                 }
             };
         }

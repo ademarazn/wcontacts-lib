@@ -1,6 +1,6 @@
 package com.ademarazn.wcontactslibrary.util;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -18,8 +18,8 @@ public class WContactUtils {
     private static final String VOIP_CALL_MIMETYPE = "vnd.android.cursor.item/vnd.com.whatsapp.voip.call";
     private static final String VIDEO_CALL_MIMETYPE = "vnd.android.cursor.item/vnd.com.whatsapp.video.call";
 
-    public static void openContact(@NonNull Context context, @NonNull WContact wContact) {
-        context.startActivity(new Intent(Intent.ACTION_VIEW, wContact.getLookupUri()));
+    public static void openContact(@NonNull Activity activity, @NonNull WContact wContact) {
+        activity.startActivity(new Intent(Intent.ACTION_VIEW, wContact.getLookupUri()));
     }
 
     public static Boolean hasProfileWData(WContact wContact) {
@@ -32,16 +32,16 @@ public class WContactUtils {
         return Boolean.FALSE;
     }
 
-    public static void startConversation(@NonNull Context context, WContact wContact) throws WDataMimeTypeException {
-        startConversation(context, wContact, Boolean.TRUE);
+    public static void startConversation(@NonNull Activity activity, WContact wContact) throws WDataMimeTypeException {
+        startConversation(activity, wContact, Boolean.TRUE);
     }
 
-    private static Boolean startConversation(Context context, WContact wContact, Boolean sendIntent) throws WDataMimeTypeException {
+    private static Boolean startConversation(Activity activity, WContact wContact, Boolean sendIntent) throws WDataMimeTypeException {
         WData profileWData = findDataByMimeType(wContact, PROFILE_MIMETYPE);
 
         if (profileWData != null) {
             if (sendIntent == Boolean.TRUE) {
-                profileWData.sendIntent(context);
+                profileWData.sendIntent(activity);
             }
 
             return Boolean.TRUE;
@@ -60,16 +60,16 @@ public class WContactUtils {
         return Boolean.FALSE;
     }
 
-    public static void makeVoiceCall(@NonNull Context context, WContact wContact) throws WDataMimeTypeException {
-        makeVoiceCall(context, wContact, Boolean.TRUE);
+    public static void makeVoiceCall(@NonNull Activity activity, WContact wContact) throws WDataMimeTypeException {
+        makeVoiceCall(activity, wContact, Boolean.TRUE);
     }
 
-    private static Boolean makeVoiceCall(Context context, WContact wContact, Boolean sendIntent) throws WDataMimeTypeException {
+    private static Boolean makeVoiceCall(Activity activity, WContact wContact, Boolean sendIntent) throws WDataMimeTypeException {
         WData voiceWData = findDataByMimeType(wContact, VOIP_CALL_MIMETYPE);
 
         if (voiceWData != null) {
             if (sendIntent == Boolean.TRUE) {
-                voiceWData.sendIntent(context);
+                voiceWData.sendIntent(activity);
             }
 
             return Boolean.TRUE;
@@ -88,15 +88,15 @@ public class WContactUtils {
         return Boolean.FALSE;
     }
 
-    public static void makeVideoCall(@NonNull Context context, WContact wContact) throws WDataMimeTypeException {
-        makeVideoCall(context, wContact, Boolean.TRUE);
+    public static void makeVideoCall(@NonNull Activity activity, WContact wContact) throws WDataMimeTypeException {
+        makeVideoCall(activity, wContact, Boolean.TRUE);
     }
 
-    private static Boolean makeVideoCall(Context context, WContact wContact, Boolean sendIntent) throws WDataMimeTypeException {
+    private static Boolean makeVideoCall(Activity activity, WContact wContact, Boolean sendIntent) throws WDataMimeTypeException {
         WData videoWData = findDataByMimeType(wContact, VIDEO_CALL_MIMETYPE);
 
         if (videoWData != null) {
-            videoWData.sendIntent(context);
+            videoWData.sendIntent(activity);
 
             return Boolean.TRUE;
         }

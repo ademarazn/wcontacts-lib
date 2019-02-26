@@ -1,7 +1,7 @@
 package com.ademarazn.wcontactslibrary;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -89,7 +89,7 @@ public class WContactsLibrary {
      * This method is used to retrieve all contacts on the device, which are WhatsApp contacts,
      * through a {@link WContactsListener}.
      * <h2>Example:</h2><pre><code>
-     * WContactsLibrary.getWContacts(context, new WContactsListener() {
+     * WContactsLibrary.getWContacts(activity, new WContactsListener() {
      *    {@literal @}Override
      *     public void onSuccess(@NonNull{@literal List<WContact>} wContacts) {
      *         for (WContact wContact : wContacts) {
@@ -102,28 +102,28 @@ public class WContactsLibrary {
      *     }
      * });</code></pre>
      *
-     * @param context  {@link Context} instance used for query purposes.
+     * @param activity {@link Activity} instance used for query purposes.
      * @param listener Listener used to retrieve a list of {@link WContact}.
      */
-    public static synchronized void getWContacts(@NonNull final Context context, @NonNull final WContactsListener listener) {
-        new GetWContactsTask(listener).execute(context);
+    public static synchronized void getWContacts(@NonNull final Activity activity, @NonNull final WContactsListener listener) {
+        new GetWContactsTask(listener).execute(activity);
     }
 
-    private static WContact parseWContact(@NonNull Context context, @NonNull Cursor c) {
+    private static WContact parseWContact(@NonNull Activity activity, @NonNull Cursor c) {
         return new WContact.Builder(c.getLong(CONTACT_ID_INDEX))
                 .setName(c.getString(CONTACT_DISPLAY_NAME_INDEX))
-                .setNumber(getWhatsAppNumber(context, c.getString(CONTACT_ID_INDEX), c.getString(CONTACT_NUMBER_INDEX)))
+                .setNumber(getWhatsAppNumber(activity, c.getString(CONTACT_ID_INDEX), c.getString(CONTACT_NUMBER_INDEX)))
                 .setPhotoUri(c.getString(CONTACT_PHOTO_URI_INDEX))
                 .setPhotoThumbUri(c.getString(CONTACT_PHOTO_THUMBNAIL_URI_INDEX))
                 .setLookupUri(c.getString(CONTACT_LOOKUP_KEY_INDEX))
-                .addAllWData(getWData(context, c.getLong(CONTACT_ID_INDEX)))
+                .addAllWData(getWData(activity, c.getLong(CONTACT_ID_INDEX)))
                 .build();
     }
 
     @NonNull
-    private static String getWhatsAppNumber(@NonNull Context context, @NonNull final String contactId, @NonNull String defaultValue) {
+    private static String getWhatsAppNumber(@NonNull Activity activity, @NonNull final String contactId, @NonNull String defaultValue) {
         numberSelectionArgs[NUMBER_CONTACT_ID_ARG_INDEX] = contactId;
-        Cursor c = query(context, NUMBER_CURSOR_URI, NUMBER_PROJECTION, NUMBER_SELECTION, numberSelectionArgs, NUMBER_SORT_ORDER);
+        Cursor c = query(activity, NUMBER_CURSOR_URI, NUMBER_PROJECTION, NUMBER_SELECTION, numberSelectionArgs, NUMBER_SORT_ORDER);
 
         if (c != null && c.moveToFirst()) {
             String number = c.getString(NUMBER_DATA1_INDEX).replace(WHATSAPP_NET_DOMAIN, "");
@@ -135,19 +135,19 @@ public class WContactsLibrary {
         return defaultValue;
     }
 
-    private static Cursor query(@NonNull Context context, Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        if (Permissions.checkReadContacts(context) == Boolean.TRUE) {
-            return context.getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+    private static Cursor query(@NonNull Activity activity, Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        if (Permissions.checkReadContacts(activity) == Boolean.TRUE) {
+            return activity.getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
         }
 
         return null;
     }
 
-    private static List<WData> getWData(@NonNull Context context, @NonNull Long contactId) {
+    private static List<WData> getWData(@NonNull Activity activity, @NonNull Long contactId) {
         wDataSelectionArgs[WDATA_CONTACT_ID_ARG_INDEX] = contactId.toString();
 
         List<WData> data = new ArrayList<>();
-        Cursor c = context.getContentResolver().query(WDATA_CURSOR_URI, WDATA_PROJECTION, WDATA_SELECTION, wDataSelectionArgs, WDATA_SORT_ORDER);
+        Cursor c = activity.getContentResolver().query(WDATA_CURSOR_URI, WDATA_PROJECTION, WDATA_SELECTION, wDataSelectionArgs, WDATA_SORT_ORDER);
 
         if (c != null) {
             while (c.moveToNext()) {
@@ -167,7 +167,7 @@ public class WContactsLibrary {
                 .build();
     }
 
-    private static class GetWContactsTask extends AsyncTask<Context, Void, List<WContact>> {
+    private static class GetWContactsTask extends AsyncTask<Activity, Void, List<WContact>> {
         private final WContactsListener mListener;
 
         GetWContactsTask(WContactsListener mListener) {
@@ -175,19 +175,19 @@ public class WContactsLibrary {
         }
 
         @Override
-        protected List<WContact> doInBackground(Context... context) {
+        protected List<WContact> doInBackground(Activity... activity) {
             Log.d(TAG, "getWContacts: doInBackground");
 
-            if (Permissions.checkReadContacts(context[0]) == Boolean.FALSE) {
+            if (Permissions.checkReadContacts(activity[0]) == Boolean.FALSE) {
                 return null;
             }
 
             List<WContact> wContacts = new ArrayList<>();
-            Cursor c = query(context[0], CURSOR_URI, PROJECTION, SELECTION, SELECTION_ARGS, SORT_ORDER);
+            Cursor c = query(activity[0], CURSOR_URI, PROJECTION, SELECTION, SELECTION_ARGS, SORT_ORDER);
 
             if (c != null) {
                 while (c.moveToNext()) {
-                    wContacts.add(parseWContact(context[0], c));
+                    wContacts.add(parseWContact(activity[0], c));
                 }
 
                 c.close();
