@@ -20,16 +20,16 @@ allprojects {
 **Step 2.** Add the dependency
 ```Groovy
 dependencies {
-    implementation 'com.github.ademarazn:wcontacts-lib:1.0'
+    implementation 'com.github.ademarazn:wcontacts-lib:1.1'
 }
 ```
 
 ## Usage
-To retrieve the wContacts (WhatsApp contact objects), use ```WContactsLibrary.getWContacts(Context context, WContactsListener listener)``` method.
+To retrieve the wContacts (WhatsApp contact objects), use ```WContactsLibrary.getWContacts(Activity activity, WContactsListener listener)``` method.
 
 **Exemple:**
 ```Java
-WContactsLibrary.getWContacts(context, new WContactsListener() {
+WContactsLibrary.getWContacts(activity, new WContactsListener() {
     @Override
     public void onSuccess(@NonNull List<WContact> wContacts) {
         for (WContact wContact : wContacts) {
@@ -46,19 +46,19 @@ WContactsLibrary.getWContacts(context, new WContactsListener() {
 This lib allows you to send, from any WContact retrieved, intents in which:
 * opens WContact in contacts list:
 ```Java
-WContactUtils.openContact(context, wContact);
+WContactUtils.openContact(activity, wContact);
 ```
 * starts conversation:
 ```Java
-WContactUtils.startConversation(context, wContact);
+WContactUtils.startConversation(activity, wContact);
 ```
 * makes voice call:
 ```Java
-WContactUtils.makeVoiceCall(context, wContact);
+WContactUtils.makeVoiceCall(activity, wContact);
 ```
 * makes video call:
 ```Java
-WContactUtils.makeVideoCall(context, wContact);
+WContactUtils.makeVideoCall(activity, wContact);
 ```
 
 # License
