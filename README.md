@@ -27,6 +27,10 @@ dependencies {
 ## Usage
 To retrieve the wContacts (WhatsApp contact objects), use ```WContactsLibrary.getWContacts(Activity activity, WContactsListener listener)``` method.
 
+*NOTE: Read contacts permission must be granted by the user. The ```Permissions.requestReadContacts(Activity act, int code)``` method can be used to prompt the user for the request.*
+
+*You may call ```getWContacts()``` again when ```onRequestPermissionsResult()``` is called. See [Sample](../master/sample/src/main/java/com/ademarazn/wcontacts/MainActivity.java).*
+
 **Exemple:**
 ```Java
 WContactsLibrary.getWContacts(activity, new WContactsListener() {
@@ -40,6 +44,7 @@ WContactsLibrary.getWContacts(activity, new WContactsListener() {
     @Override
     public void onFailure(@NonNull Exception exception) {
         exception.printStackTrace();
+        Permissions.requestReadContacts(activity, 101);
     }
 });
 ```
