@@ -1,5 +1,7 @@
 [![License: MIT](https://img.shields.io/github/license/ademarazn/wcontacts-lib.svg)](https://opensource.org/licenses/MIT)
 [![JitPack](https://jitpack.io/v/ademarazn/wcontacts-lib.svg)](https://jitpack.io/#ademarazn/wcontacts-lib)
+[![Code Quality Score](https://www.code-inspector.com/project/24319/score/svg)](https://frontend.code-inspector.com/public/project/24319/wcontacts-lib/dashboard)
+[![Code Grade](https://www.code-inspector.com/project/24319/status/svg)](https://frontend.code-inspector.com/public/project/24319/wcontacts-lib/dashboard)
 
 # WContacts Lib
 A library to retrieve WhatsApp contacts stored on the device.
